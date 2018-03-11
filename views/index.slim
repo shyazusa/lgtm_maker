@@ -3,4 +3,12 @@ form method="post" action="./upload" enctype="multipart/form-data"
   .form-group
     label 画像
     input.form-control type="file" name="photo"
+  .form-group
+    label フォント
+    select.selectpicker name="font"
+      - @fonts_path.each do |font_path|
+          option value="#{font_path}" "#{font_path}"
+  .form-group
+    label フォントサイズ
+    input.form-control type="textarea" name="pointsize"
   button.btn.btn-default type="submit" アップロード
