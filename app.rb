@@ -17,8 +17,7 @@ post '/upload' do
       p params[:photo][:tempfile]
       f.write params[:photo][:tempfile].read
     end
-    addwindow image_path
-    enchar image_path, params[:message].to_s, params[:font].to_s, params[:pointsize].to_i
+    enchar image_path, 'LGTM'.to_s, params[:font].to_s, params[:pointsize].to_i
     @mes = 'アップロード成功'
   else
     @mes = 'アップロード失敗'
