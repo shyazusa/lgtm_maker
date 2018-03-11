@@ -4,7 +4,7 @@ require 'slim'
 require 'RMagick'
 
 get '/' do
-  @title = 'heroine_filter'
+  @title = 'lgtm_maker'
   @fonts_path = fonts_list
   slim :index
 end
