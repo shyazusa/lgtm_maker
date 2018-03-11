@@ -37,29 +37,6 @@ get '/images' do
 end
 
 helpers do
-  def resize(image_path, height, width)
-    image_file_name = File.basename(image_path)
-    img = Magick::ImageList.new(image_path)
-    new_img = img.scale(height, width)
-    new_img.write("public/images/resize_#{image_file_name}")
-    new_img.destroy!
-  end
-
-  def addwindow(image_path)
-    image_file_name = File.basename(image_path)
-    img = Magick::ImageList.new(image_path)
-    start = img.rows
-    height = (img.rows / 3) * 2
-    width = img.columns
-
-    draw = Magick::Draw.new
-    draw.fill('#428b0960')
-    draw.rectangle(0, start, width, height)
-    draw.draw(img)
-    img.write("public/images/#{image_file_name}")
-    img.destroy!
-  end
-
   def enchar(image_path, char, font, pointsize)
     image_file_name = File.basename(image_path)
     img = Magick::ImageList.new(image_path)
