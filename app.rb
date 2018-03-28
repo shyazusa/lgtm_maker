@@ -4,64 +4,76 @@ require 'slim'
 require 'RMagick'
 
 get '/' do
-  @title = 'heroine_filter'
+  @title = 'lgtm_maker'
   slim :index
 end
 
 post '/upload' do
-  @title = 'upload'
   if params[:photo]
-    save_path = "./public/images/#{params[:photo][:filename]}"
-    File.open(save_path, 'wb') do |f|
+    image_path = "./public/images/#{params[:photo][:filename]}"
+    File.open(image_path, 'wb') do |f|
       p params[:photo][:tempfile]
       f.write params[:photo][:tempfile].read
-      @mes = 'アップロード成功'
     end
-    enchar save_path
-  else
-    @mes = 'アップロード失敗'
+    enchar image_path, params[:stroke]
   end
-  slim :upload
   redirect 'images'
 end
 
 get '/images' do
-  images_name = Dir.glob("./public/images/*")
+  @title = 'local images'
+  images_name = Dir.glob('./public/images/*')
   @images_path = []
+  images_name.sort!
   images_name.each do |image|
-    image_path = image.gsub("public/", "./")
-    @images_path << image_path
+    @images_path << image.gsub('public/', './')
   end
   slim :images
 end
 
 helpers do
-  def enchar image_path
+  def enchar(image_path, stroke)
     image_file_name = File.basename(image_path)
     img = Magick::ImageList.new(image_path)
-    scaled_img = img.scale(300, 300)
+    char = 'LGTM'
+    font = './public/fonts/Mamelon.otf'
+    pointsize = 200
+    fill = 'white'
+    if img.columns > 1200
+      scale = 1200.quo(img.columns).to_f
+      img = img.resize(scale)
+    end
 
-    font = "851tegaki_zatsu_normal_0883.ttf"
+    @fonts_path = fonts_list
     draw = Magick::Draw.new
-
-    draw.annotate(scaled_img, 0, 0, 5, 5, 'LGTM') do
+    draw.annotate(img, 0, 0, 0, 0, char) do
       self.font = font
-      self.fill = '#428b09'
-      self.stroke = 'white'
+      self.fill = fill
+      self.pointsize = pointsize
+      self.stroke = stroke
       self.stroke_width = 4
-      self.pointsize = 30
-      self.gravity = Magick::NorthWestGravity
+      self.gravity = Magick::CenterGravity
     end
 
-    draw.annotate(scaled_img, 0, 0, 5, 5, 'LGTM') do
+    draw.annotate(img, 0, 0, 0, 0, char) do
       self.font = font
-      self.fill = '#428b09'
+      self.fill = fill
+      self.pointsize = pointsize
       self.stroke = 'transparent'
-      self.pointsize = 30
-      self.gravity = Magick::NorthWestGravity
+      self.gravity = Magick::CenterGravity
     end
 
-    scaled_img.write("public/images/#{image_file_name}")
-    scaled_img.destroy!
+    img.write("public/images/#{image_file_name}")
+    img.destroy!
+  end
+
+  def fonts_list
+    fonts_name = Dir.glob('./public/fonts/*')
+    @fonts_path = []
+    fonts_name.sort!
+    fonts_name.each do |font|
+      @fonts_path << font
+    end
+    @fonts_path
   end
 end
