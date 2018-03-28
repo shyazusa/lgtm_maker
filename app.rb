@@ -5,22 +5,17 @@ require 'RMagick'
 
 get '/' do
   @title = 'lgtm_maker'
-  @fonts_path = fonts_list
   slim :index
 end
 
 post '/upload' do
-  @title = 'upload'
   if params[:photo]
     image_path = "./public/images/#{params[:photo][:filename]}"
     File.open(image_path, 'wb') do |f|
       p params[:photo][:tempfile]
       f.write params[:photo][:tempfile].read
     end
-    enchar image_path, 'LGTM'.to_s, params[:font].to_s, params[:pointsize].to_i
-    @mes = 'アップロード成功'
-  else
-    @mes = 'アップロード失敗'
+    enchar image_path, params[:stroke]
   end
   redirect 'images'
 end
@@ -37,31 +32,35 @@ get '/images' do
 end
 
 helpers do
-  def enchar(image_path, char, font, pointsize)
+  def enchar(image_path, stroke)
     image_file_name = File.basename(image_path)
     img = Magick::ImageList.new(image_path)
-    start = img.rows
-    height = (img.rows / 3) * 2
-    width = img.columns
-    fill = '#A6126A'
+    char = 'LGTM'
+    font = './public/fonts/Mamelon.otf'
+    pointsize = 200
+    fill = 'white'
+    if img.columns > 1200
+      scale = 1200.quo(img.columns).to_f
+      img = img.resize(scale)
+    end
 
     @fonts_path = fonts_list
     draw = Magick::Draw.new
-    draw.annotate(img, 0, 0, 5, height, char) do
+    draw.annotate(img, 0, 0, 0, 0, char) do
       self.font = font
       self.fill = fill
       self.pointsize = pointsize
-      self.stroke = 'white'
+      self.stroke = stroke
       self.stroke_width = 4
-      self.gravity = Magick::NorthWestGravity
+      self.gravity = Magick::CenterGravity
     end
 
-    draw.annotate(img, 0, 0, 5, height, char) do
+    draw.annotate(img, 0, 0, 0, 0, char) do
       self.font = font
       self.fill = fill
       self.pointsize = pointsize
       self.stroke = 'transparent'
-      self.gravity = Magick::NorthWestGravity
+      self.gravity = Magick::CenterGravity
     end
 
     img.write("public/images/#{image_file_name}")
