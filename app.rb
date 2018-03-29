@@ -44,7 +44,6 @@ helpers do
       img = img.resize(scale)
     end
 
-    @fonts_path = fonts_list
     draw = Magick::Draw.new
     draw.annotate(img, 0, 0, 0, 0, char) do
       self.font = font
@@ -65,15 +64,6 @@ helpers do
 
     img.write("public/images/#{image_file_name}")
     img.destroy!
-  end
 
-  def fonts_list
-    fonts_name = Dir.glob('./public/fonts/*')
-    @fonts_path = []
-    fonts_name.sort!
-    fonts_name.each do |font|
-      @fonts_path << font
-    end
-    @fonts_path
   end
 end
