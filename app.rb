@@ -35,18 +35,26 @@ helpers do
   def enchar(image_path, stroke)
     image_file_name = File.basename(image_path)
     img = Magick::ImageList.new(image_path)
-    char = 'LGTM'
+    lgtm = 'LGTM'
+    char = "\nLooks Good To Me."
     font = './public/fonts/Mamelon.otf'
-    pointsize = 200
+    pointsize = 120
     fill = 'white'
     if img.columns > 1200
       scale = 1200.quo(img.columns).to_f
       img = img.resize(scale)
     end
 
-    @fonts_path = fonts_list
+    writePic(img, lgtm, font, fill, pointsize, stroke, 0)
+    writePic(img, char, font, fill, pointsize / 3, stroke, 60)
+
+    img.write("public/images/#{image_file_name}")
+    img.destroy!
+  end
+
+  def writePic(img, char, font, fill, pointsize, stroke, hight)
     draw = Magick::Draw.new
-    draw.annotate(img, 0, 0, 0, 0, char) do
+    draw.annotate(img, 0, 0, 0, hight, char) do
       self.font = font
       self.fill = fill
       self.pointsize = pointsize
@@ -55,25 +63,12 @@ helpers do
       self.gravity = Magick::CenterGravity
     end
 
-    draw.annotate(img, 0, 0, 0, 0, char) do
+    draw.annotate(img, 0, 0, 0, hight, char) do
       self.font = font
       self.fill = fill
       self.pointsize = pointsize
       self.stroke = 'transparent'
       self.gravity = Magick::CenterGravity
     end
-
-    img.write("public/images/#{image_file_name}")
-    img.destroy!
-  end
-
-  def fonts_list
-    fonts_name = Dir.glob('./public/fonts/*')
-    @fonts_path = []
-    fonts_name.sort!
-    fonts_name.each do |font|
-      @fonts_path << font
-    end
-    @fonts_path
   end
 end
