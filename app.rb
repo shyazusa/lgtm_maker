@@ -2,6 +2,7 @@ require 'sinatra'
 require 'sinatra/reloader'
 require 'slim'
 require 'RMagick'
+require 'date'
 
 get '/' do
   @title = 'lgtm_maker'
@@ -10,7 +11,8 @@ end
 
 post '/upload' do
   if params[:photo]
-    image_path = "./public/images/#{params[:photo][:filename]}"
+    datetime = DateTime.now.strftime('%Y-%m-%d-%H-%M-%s').to_s
+    image_path = "./public/images/#{datetime}_#{params[:photo][:filename]}"
     File.open(image_path, 'wb') do |f|
       p params[:photo][:tempfile]
       f.write params[:photo][:tempfile].read
@@ -28,6 +30,7 @@ get '/images' do
   images_name.each do |image|
     @images_path << image.gsub('public/', './')
   end
+  @images_path.sort!.reverse!
   slim :images
 end
 
