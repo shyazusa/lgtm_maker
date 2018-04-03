@@ -30,6 +30,7 @@ get '/images' do
   images_name.each do |image|
     @images_path << image.gsub('public/', './')
   end
+  @images_path.sort!.reverse!
   slim :images
 end
 
