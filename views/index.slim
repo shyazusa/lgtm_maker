@@ -1,9 +1,26 @@
-h1 = @title
-form method="post" action="./upload" enctype="multipart/form-data"
-  .form-group
-    label 画像
-    input.form-control type="file" name="photo"
-  .form-group
-    label フォントカラー
-    input.form-control type="textarea" name="stroke" value="black"
-  button.btn.btn-default type="submit" アップロード
+.container
+  .row
+    .col-md-12.mb-md-5
+      h1.text-center = @title
+  .row
+    .col-md-12
+      form method="post" action="./upload" enctype="multipart/form-data"
+      .row.mb-md-4
+        .col-md-12
+          .form-group
+            label.input-group-btn
+              span.btn.btn-primary
+                = "Choose File"
+                input.uploadFile type="file" style="display:none"
+            input.form-control.file-name-text type="text" readonly=""
+      .row.mb-md-4
+        .col-md-12
+          .imagePreview
+      .row.mb-md-4
+        .col-md-12
+          .form-group
+            label フォントカラー
+            input.form-control type="textarea" name="stroke" value="black"
+      .row
+        .col-md-12
+          button.btn.btn-primary type="submit" アップロード

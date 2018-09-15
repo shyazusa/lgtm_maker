@@ -1,6 +1,15 @@
-a.btn.btn-default href="/" TOPへ戻る
-h1 = @title
-- @images_path.each do |image_path|
-    img src="#{image_path}"/
-br
-a.btn.btn-default href="/" TOPへ戻る
+.container
+  .row
+    .col-md-2.offset-md-5
+      a.btn.btn-primary.mx-auto.d-block href="/" TOPへ戻る
+  .row
+    .col-md-12.mb-md-5
+      h1.text-center = @title
+  .row
+    .col-md-12
+      - @images_path.each do |image_path|
+        img.imagePreview.mb-md-4.d-block src="#{image_path}"/
+      br
+  .row
+    .col-md-2.offset-md-5
+      a.btn.btn-primary.mx-auto.d-block href="/" TOPへ戻る
