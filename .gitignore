@@ -2,6 +2,7 @@
 /Gemfile.lock
 /.bundle/
 /bundle
+/node_modules/
 /public/images
 /public/fonts
 
