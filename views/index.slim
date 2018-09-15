@@ -5,22 +5,22 @@
   .row
     .col-md-12
       form method="post" action="./upload" enctype="multipart/form-data"
-      .row.mb-md-4
-        .col-md-12
-          .form-group
-            label.input-group-btn
-              span.btn.btn-primary
-                = "Choose File"
-                input.uploadFile type="file" style="display:none"
-            input.form-control.file-name-text type="text" readonly=""
+        .row.mb-md-4
+          .col-md-12
+            .form-group
+              label.input-group-btn
+                span.btn.btn-primary
+                  = "Choose File"
+                  input.uploadFile type="file" name="photo" style="display:none"
+              input.form-control.file-name-text type="text" readonly=""
+        .row.mb-md-4
+          .col-md-12
+            .form-group
+              label フォントカラー
+              input.form-control type="textarea" name="stroke" value="black"
+        .row
+          .col-md-12.mb-md-4
+            button.btn.btn-primary.submit-button type="submit" アップロード
       .row.mb-md-4
         .col-md-12
           .imagePreview
-      .row.mb-md-4
-        .col-md-12
-          .form-group
-            label フォントカラー
-            input.form-control type="textarea" name="stroke" value="black"
-      .row
-        .col-md-12
-          button.btn.btn-primary type="submit" アップロード

@@ -19,6 +19,7 @@ $(document).on('change', ':file', function() {
       img.src = this.result;
       $('.imagePreview').show();
       $('.imagePreview').css("background-image", "url("+this.result+")");
+      $('html,body').animate({scrollTop:$('.submit-button').offset().top});
     }
   }
 });
