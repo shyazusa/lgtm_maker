@@ -15,8 +15,7 @@ $(document).on('change', ':file', function() {
     const reader = new FileReader();
     reader.readAsDataURL(files[0]);
     reader.onloadend = function() {
-      const img = new Image();
-      img.src = this.result;
+      $('.submit-button').show('slow');
       $('.imagePreview').show();
       $('.imagePreview').css("background-image", "url("+this.result+")");
       $('html,body').animate({scrollTop:$('.submit-button').offset().top});
