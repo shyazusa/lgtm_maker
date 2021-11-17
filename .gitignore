@@ -5,4 +5,4 @@
 /node_modules/
 /public/images
 /public/fonts
-
+/vendor/bundle
